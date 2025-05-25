@@ -102,7 +102,6 @@ UPDATE species
 -- Afternoon: 12 PM–5 PM
 -- Evening: after 5 PM
 
-
 SELECT 
     sighting_id,
     CASE 
@@ -115,8 +114,8 @@ FROM sightings;
 
 -- 9️. Delete rangers who have never sighted any species
 
-SELECT * from rangers
-    LEFT JOIN sightings ON "rangers".ranger_id = "sightings".ranger_id 
+DELETE FROM rangers WHERE ranger_id IN (
+    SELECT "rangers".ranger_id FROM "rangers"
+    LEFT JOIN sightings ON "rangers".ranger_id = "sightings".ranger_id
         WHERE "sightings".ranger_id IS NULL
-   
-
+);
