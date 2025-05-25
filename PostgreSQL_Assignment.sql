@@ -70,4 +70,14 @@ SELECT count(DISTINCT species_id) as "unique_species_count" from sightings
 SELECT * from sightings WHERE location ILIKE('%Pass%')
 
 
--- 4. 
+-- 4. List each ranger's name and their total number of sightings.
+
+SELECT * from rangers
+    JOIN sightings ON "sightings".ranger_id = "rangers".ranger_id;
+
+
+-- 5. List species that have never been sighted.
+
+SELECT common_name from species
+    LEFT JOIN sightings on "sightings".species_id = "species".species_id
+    WHERE sighting_id IS NULL;
