@@ -147,23 +147,6 @@ SELECT * FROM orders
 
 ## 9. Explain the GROUP BY clause and its role in aggregation operations.
 
-Let's say we have a table called students and in that table we have a column named countries where it will say from which country that student came from. Now what grouping does is it will group all the unique countries together and return us a single column which have those unique countries? For example, there are hundred students and they belong to 4 countries, Bangladesh, India, Sri Lanka, and Pakistan. So when we will group this table by the country name it will return us a column of the country names which will only have this for names and those four rows.
-
-Like this:
-
-```
-Countries
----------
-Bangladesh
-India
-Pakistan
-Srilanka
-```
-
-Now why grouping like this helps us in the aggregate operations? First of all what is an aggregate operation? An example of an aggregate operation is some operation where all the roles of a specified column is calculated one by one and a single value is returned. Similarly, in case of groups, what happens is if we apply the sum operation to the groups? The sum operation is done to each rose of the column for each group and it returns the result for each individual groups.
-
-Now because of this weekend find out important information like how many total citizens are there in each countries by using the count Aggregate operation. Or if you want to see an average score scored by students of each countries then we can use max aggregate operation. So just like this grouping helps us to achieve important information using aggregate operations
-
 GROUP BY হল SQL-এর একটি ক্লজ যেটা ব্যবহার করে একই মান বিশিষ্ট সারিগুলিকে (rows) একসাথে গ্রুপ করা হয়। এটি সাধারণত aggregate functions (যেমন COUNT(), SUM(), AVG(), MAX(), MIN()) এর সাথে ব্যবহৃত হয়।
 
 ধরুন আমাদের একটি students নামের টেবিল আছে, যেখানে একটি country নামের কলাম আছে। এই কলামে প্রতিটি ছাত্র কোন দেশ থেকে এসেছে তা লেখা থাকে।
