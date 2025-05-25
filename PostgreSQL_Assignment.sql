@@ -9,16 +9,13 @@ CREATE TABLE rangers(
 )
 
 
-CREATE type conservation_status_type as ENUM('Endangered', 'Vulnerable', 'Historic');
-
-
 -- CREATE species Table
 CREATE TABLE species(
     species_id SERIAL PRIMARY KEY,
     common_name VARCHAR(255),
     scientific_name VARCHAR(255),
     discovery_date DATE,
-    conservation_status conservation_status_type 
+    conservation_status VARCHAR(25)
 )
 
 
