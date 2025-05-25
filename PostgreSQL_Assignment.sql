@@ -1,4 +1,4 @@
--- Active: 1747498472132@@127.0.0.1@5432@conservation_db@public
+-- Active: 1747498472132@@127.0.0.1@5432@conservation_db
 create DATABASE conservation_db;
 
 -- CREATE rangers Table
@@ -9,7 +9,7 @@ CREATE TABLE rangers(
 )
 
 
-CREATE type conservation_status_type as ENUM('Endangered', 'Vulnerable');
+CREATE type conservation_status_type as ENUM('Endangered', 'Vulnerable', 'Historic');
 
 
 -- CREATE species Table
@@ -63,21 +63,60 @@ INSERT INTO rangers (name, region) VALUES ('Derek Fox', 'Coastal Plains')
 
 -- 2️. Count unique species ever sighted
 
-SELECT count(DISTINCT species_id) as "unique_species_count" from sightings
+SELECT count(DISTINCT species_id) as "unique_species_count" FROM sightings
 
 
 -- 3. Find all sightings where the location includes "Pass"
-SELECT * from sightings WHERE location ILIKE('%Pass%')
+SELECT * FROM sightings WHERE location ILIKE('%Pass%')
 
 
 -- 4. List each ranger's name and their total number of sightings.
 
-SELECT * from rangers
-    JOIN sightings ON "sightings".ranger_id = "rangers".ranger_id;
+SELECT name, count(sighting_id) as "total_sightings" FROM rangers
+    JOIN sightings ON "sightings".ranger_id = "rangers".ranger_id
+    GROUP BY name;
 
 
 -- 5. List species that have never been sighted.
 
-SELECT common_name from species
+SELECT common_name FROM species
     LEFT JOIN sightings on "sightings".species_id = "species".species_id
     WHERE sighting_id IS NULL;
+
+
+-- 6. Show the most recent 2 sightings
+SELECT  common_name, sighting_time, name from sightings
+    JOIN species ON "sightings".species_id = "species".species_id
+    JOIN rangers ON "sightings".species_id = "rangers".ranger_id
+    ORDER BY sighting_time DESC LIMIT 2
+
+
+-- 7. Update all species discovered before year 1800 to have status 'Historic'
+
+UPDATE species
+    SET "conservation_status" =  'Historic' WHERE "discovery_date" < '1800-01-01'
+
+-- 8. Label each sighting's time of day as 'Morning', 'Afternoon', or 'Evening'.
+
+-- Morning: before 12 PM
+-- Afternoon: 12 PM–5 PM
+-- Evening: after 5 PM
+
+
+SELECT 
+    sighting_id,
+    CASE 
+        WHEN EXTRACT(HOUR FROM sighting_time) < 12 THEN 'Morning'
+        WHEN EXTRACT(HOUR FROM sighting_time) BETWEEN 12 AND 17 THEN 'Afternoon'
+        ELSE 'Evening'
+    END AS time_of_day
+FROM sightings;
+
+
+-- 9️. Delete rangers who have never sighted any species
+
+SELECT * from rangers
+    LEFT JOIN sightings ON "rangers".ranger_id = "sightings".ranger_id 
+        WHERE "sightings".ranger_id IS NULL
+   
+
