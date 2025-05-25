@@ -87,7 +87,7 @@ SELECT common_name FROM species
 -- 6. Show the most recent 2 sightings
 SELECT  common_name, sighting_time, name from sightings
     JOIN species ON "sightings".species_id = "species".species_id
-    JOIN rangers ON "sightings".species_id = "rangers".ranger_id
+    JOIN rangers ON "sightings".ranger_id = "rangers".ranger_id
     ORDER BY sighting_time DESC LIMIT 2
 
 
@@ -119,3 +119,4 @@ DELETE FROM rangers WHERE ranger_id IN (
     LEFT JOIN sightings ON "rangers".ranger_id = "sightings".ranger_id
         WHERE "sightings".ranger_id IS NULL
 );
+
